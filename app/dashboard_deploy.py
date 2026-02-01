@@ -8,6 +8,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import os
 
 # ================================================
 # PAGE CONFIGURATION
@@ -29,7 +30,13 @@ def load_data():
     Load cleaned reservation data from CSV.
     Uses @st.cache_data to load data only ONCE.
     """
-    df = pd.read_csv('hotel_reservations_clean.csv')
+    # Get the directory where this script is located
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Build path to CSV (same folder as script)
+    csv_path = os.path.join(script_dir, 'hotel_reservations_clean.csv')
+    
+    df = pd.read_csv(csv_path)
     
     # Recreate calculated columns
     df['total_guests'] = df['no_of_adults'] + df['no_of_children']
