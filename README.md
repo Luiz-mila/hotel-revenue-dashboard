@@ -15,7 +15,7 @@ Interactive dashboard analyzing **36,000+ real hotel reservations** to identify 
 
 ---
 
-## �adalTools & Technologies
+## DadalTools & Technologies
 
 - **SQL (MySQL):** Complex queries, CASE WHEN, aggregations, date functions
 - **Python 3.11:** Data cleaning, analysis, and visualization
