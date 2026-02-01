@@ -5,6 +5,9 @@
 ![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red)
 ![Status](https://img.shields.io/badge/Status-Complete-success)
 
+## 🚀 Live Dashboard
+**[Click here to open the dashboard](https://hotel-revenue-dashboard-bi.streamlit.app/)**
+
 ## 🎯 Project Overview
 
 Interactive dashboard analyzing **36,000+ real hotel reservations** to identify revenue optimization opportunities, cancellation patterns, and strategic pricing insights.
