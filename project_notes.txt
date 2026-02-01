@@ -1,0 +1,238 @@
+================================================================================
+HOTEL REVENUE MANAGEMENT DASHBOARD - PROJECT NOTES
+================================================================================
+Author: Luiz Milaré
+Date: January 2026
+Location: France
+================================================================================
+
+PROJECT OVERVIEW
+================================================================================
+Interactive dashboard analyzing 36,000+ hotel reservations to identify
+revenue optimization opportunities, cancellation patterns, and strategic
+pricing insights.
+
+Built with: Python, SQL (MySQL), Pandas, Plotly, Streamlit
+Dataset: Hotel Reservations Classification Dataset (Kaggle)
+Total Revenue Analyzed: $7,028,557.32
+
+================================================================================
+TECHNICAL STACK
+================================================================================
+- Database: MySQL 8.0 (local development)
+- Language: Python 3.11
+- Libraries: pandas, plotly, streamlit, sqlalchemy, mysql-connector-python
+- IDE: VS Code + Jupyter Notebook
+- Deployment: Streamlit Cloud (free tier)
+- Version Control: Git + GitHub
+
+================================================================================
+PROJECT STRUCTURE
+================================================================================
+hotel-revenue-dashboard/
+│
+├── data/                                # Raw data
+│   └── hotel_reservations.csv          # Original Kaggle dataset
+├── sql/
+│   └── hotel_analysis.sql              # 4 SQL analysis queries
+├── notebooks/
+│   └── exploration.ipynb               # Data exploration & cleaning
+├── app/
+│   ├── dashboard.py                    # Local version (MySQL)
+│   ├── dashboard_deploy.py             # Deploy version (CSV)
+│   └── hotel_reservations_clean.csv    # Cleaned dataset
+├── requirements.txt                    # Python dependencies
+├── .gitignore                          # Git ignore rules
+├── README.md                           # Main documentation
+└── project_notes.txt                   # This file
+
+================================================================================
+DATA CLEANING STEPS
+================================================================================
+
+1. Removed bookings with 0 adults (139 rows)
+   - Reason: Invalid reservations (no guests)
+
+2. Removed bookings with 0 nights (78 rows)
+   - Reason: Invalid stays (no duration)
+
+3. Created new columns:
+   - total_nights: weekend_nights + week_nights
+   - total_revenue: avg_price_per_room * total_nights
+   - total_guests: no_of_adults + no_of_children
+   - revenue_per_guest: total_revenue / total_guests
+   - booking_window: Lead time categorization
+
+Original dataset: 36,275 rows
+Clean dataset:    36,058 rows
+Data retained:    99.4%
+
+================================================================================
+SQL QUERIES
+================================================================================
+
+Query 1: Revenue by Market Segment
+-----------------------------------
+Purpose: Identify which channel generates most revenue
+Key Result: Online leads ($4.8M) but has highest cancellation (8,429)
+Techniques: GROUP BY, CASE WHEN, conditional aggregation
+
+Query 2: Monthly Revenue Trend
+-------------------------------
+Purpose: Identify seasonality and growth patterns
+Key Result: Peak in Aug-Oct, consistent growth trend
+Techniques: GROUP BY multiple columns, date functions, time series
+
+Query 3: Cancellation by Lead Time
+------------------------------------
+Purpose: Understand why 32.8% cancellation rate is high
+Key Result: Very Early bookings cancel 73.8% of the time
+Techniques: CASE WHEN bucketing, cancellation rate calculation
+
+Query 4: Room Type Performance
+--------------------------------
+Purpose: Identify which rooms to invest in or phase out
+Key Result: Type 5 is hidden gem, Type 2 should be phased out
+Techniques: Complex aggregations, multiple metrics comparison
+
+================================================================================
+DASHBOARD FEATURES
+================================================================================
+
+Sidebar Filters:
+- Year selection (multiselect)
+- Market Segment (multiselect)
+- Room Type (multiselect)
+- Booking Status (radio: All/Confirmed/Canceled)
+- Reset button
+
+Charts:
+1. Revenue by Market Segment (bar chart - Blues)
+2. Monthly Revenue Trend (line chart with markers)
+3. Cancellation by Lead Time (bar chart - Reds)
+4. Room Type Performance (2 charts side by side)
+   - Revenue comparison (bar chart)
+   - ADR vs Cancellation Rate (grouped bars with dual y-axis)
+
+KPIs:
+- Filtered Records count
+- Confirmation Rate
+- Total Revenue
+- Average ADR
+
+================================================================================
+KEY FINDINGS
+================================================================================
+
+1. REVENUE INSIGHTS:
+   - Online segment generates 69% of total revenue
+   - Mid-range pricing ($50-200) is the sweet spot
+   - Room Type 1 generates 70% of revenue but has low ADR
+
+2. CANCELLATION INSIGHTS:
+   - Overall cancellation rate: 32.8% (industry avg: 15-25%)
+   - Very Early bookings (180+ days): 73.8% cancellation
+   - Last Minute bookings (0-6 days): ~10% cancellation
+   - Pattern: longer lead time = higher cancellation risk
+
+3. ROOM TYPE INSIGHTS:
+   - Type 1: Highest volume (28,063) but lowest ADR ($93.48)
+   - Type 2: Underperformer (low volume, low ADR, high cancellation)
+   - Type 5: Hidden gem (lowest cancellation 27.2%, good ADR $118.31)
+   - Type 6: Premium (highest ADR $178.53, highest rev/booking $507.85)
+
+================================================================================
+BUSINESS RECOMMENDATIONS
+================================================================================
+
+REVENUE OPTIMIZATION:
+1. Test ADR increase on Type 1 (+$7 = +$196k/year potential)
+2. Dynamic pricing for last-minute (+20-30% premium)
+3. Peak season pricing Aug-Oct (+15-20%)
+
+CANCELLATION REDUCTION:
+1. Non-refundable rate for 180+ days (with 20-25% discount)
+2. Semi-flexible policy: free cancel up to 15 days before
+3. Deposit requirement for very early bookings
+
+PORTFOLIO:
+1. Invest marketing in Room Type 5 (hidden gem)
+2. Develop Type 6 with perks (non-refundable + benefits)
+3. Phase out or convert Room Type 2
+
+================================================================================
+DEPLOYMENT
+================================================================================
+
+Local Development:
+- Uses MySQL database for data storage
+- Run: cd app && streamlit run dashboard.py
+
+Production (Streamlit Cloud):
+- Uses CSV file for data (no MySQL dependency)
+- Run: cd app && streamlit run dashboard_deploy.py
+- Deployed at: [Streamlit URL - add after deploy]
+
+Why two versions?
+- dashboard.py: MySQL connection (local development)
+- dashboard_deploy.py: CSV file (Streamlit Cloud deployment)
+- Streamlit Cloud cannot connect to local MySQL
+
+================================================================================
+INDUSTRY BENCHMARKS (REFERENCE)
+================================================================================
+
+ADR (Average Daily Rate):
+    Budget: $50-80 | Mid-Range: $80-150 | Upscale: $150-300 | Luxury: $300+
+
+Cancellation Rate:
+    Excellent: <15% | Good: 15-25% | Average: 25-35% | Poor: >35%
+
+Average Length of Stay:
+    Business: 1-2 nights | City: 2-3 nights | Resort: 4-7 nights
+
+Repeat Guest Rate:
+    Excellent: >30% | Good: 20-30% | Average: 10-20% | Poor: <10%
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+Issue: "FileNotFoundError: hotel_reservations_clean.csv"
+Solution: CSV must be in same folder as dashboard_deploy.py (app/)
+
+Issue: "No module named 'streamlit'"
+Solution: pip install -r requirements.txt
+
+Issue: Dashboard shows blank page
+Solution: Save file (Ctrl+S) then click "Rerun" in browser
+
+Issue: Charts not updating after filter
+Solution: All charts must use df_filtered (not df)
+
+================================================================================
+SKILLS DEMONSTRATED
+================================================================================
+
+SQL: Complex queries, CASE WHEN, conditional aggregations, GROUP BY
+Python: Data cleaning, feature engineering, statistical analysis
+Plotly: Interactive charts, dual y-axis, grouped bars
+Streamlit: Sidebar filters, caching, responsive layout
+Business: Revenue management, pricing strategy, portfolio optimization
+
+================================================================================
+CHANGELOG
+================================================================================
+
+Version 1.0 - January 2026
+- Data exploration and cleaning
+- 4 SQL analysis queries
+- Interactive Streamlit dashboard
+- Sidebar filters (year, segment, room type, status)
+- 4 interactive charts
+- Strategic business recommendations
+- Deployment on Streamlit Cloud
+
+================================================================================
+END OF NOTES
+================================================================================
