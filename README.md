@@ -33,6 +33,8 @@ Interactive dashboard analyzing **36,000+ real hotel reservations** to identify 
 ```
 hotel-revenue-dashboard/
 │
+├── .streamlit/
+│   └── config.toml                     # Dark theme configuration
 ├── data/                                # Raw data
 │   └── hotel_reservations.csv          # Original dataset (Kaggle)
 ├── sql/
