@@ -198,9 +198,9 @@ Open browser: `http://localhost:8501`
 
 ## 📧 Contact
 
-LinkedIn: https://www.linkedin.com/in/luiz-milar%C3%A9-a5869519a/
+LinkedIn: www.linkedin.com/in/luiz-milaré/
 
-Email: luizmilare958@gmail.com
+Email: milahercu@gmail.com
 
 GitHub: github.com/Luiz-mila
 
